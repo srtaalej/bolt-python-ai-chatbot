@@ -32,7 +32,11 @@ class AnthropicAPI(BaseAPIProvider):
     }
 
     def __init__(self):
-        self.api_key = os.environ.get("ANTHROPIC_API_KEY")
+        self.enabled = bool(os.environ.get("ANTHROPIC_API_KEY", ""))
+        if self.enabled:
+            self.api_key = os.environ.get("ANTHROPIC_API_KEY")
+        else:
+            self.api_key = None
 
     def set_model(self, model_name: str):
         if model_name not in self.MODELS.keys():
@@ -40,7 +44,7 @@ class AnthropicAPI(BaseAPIProvider):
         self.current_model = model_name
 
     def get_models(self) -> dict:
-        if self.api_key is not None:
+        if self.enabled is not None:
             return self.MODELS
         else:
             return {}
