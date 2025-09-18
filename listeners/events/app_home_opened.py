@@ -11,9 +11,8 @@ and publishes a view to the user's home tab in Slack.
 
 
 def app_home_opened_callback(event: dict, logger: Logger, client: WebClient):
-    if event["tab"] != "home":
+    if event.get("tab", "home") != "home":
         return
-
     # create a list of options for the dropdown menu each containing the model name and provider
     options = [
         {
